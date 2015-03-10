@@ -72,8 +72,8 @@ void CQueue::grow()
     else {
         int current = 0;
         for (int i = 0; i < bufferSize - head; i++) {
-            new_buffer[current] = buffer[head + i]; \
-                current++;
+            new_buffer[current] = buffer[head + i];
+            current++;
         }
         for (int i = 0; i < tail; i++) {
             new_buffer[current] = buffer[i];
@@ -111,7 +111,6 @@ bool IsPossible(CQueue &Q) {
     for (int i = 0; i < n; i++) {
         int command, value;
         std::cin >> command >> value;
-        assert( command == 3 || command == 2);
         switch (command) {
             default: answer = false;
             case 2: {
@@ -125,7 +124,6 @@ bool IsPossible(CQueue &Q) {
             }
 
         }
-       // Q.print();
     }
 
     return answer;
