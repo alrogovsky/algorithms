@@ -1,7 +1,6 @@
 /*
 	Alexander Rogovsky
 	APO-12
-
 	Формат входных данных.
 	В первой строке количество команд.
 	Каждая команда задаётся как 2 целых числа: a b.
@@ -13,12 +12,12 @@
 	Если дана команда pop*, то число b - ожидаемое значение. Если команда pop вызвана для пустой структуры данных, то ожидается “-1”.
 	Формат выходных данных.
 	Требуется напечатать YES - если все ожидаемые значения совпали. Иначе, если хотя бы одно ожидание не оправдалось, то напечатать NO.
-
 	4_1. Реализовать очередь с динамическим буфером.
 */
 
 
 #include <iostream>
+#include <string.h>
 #include <assert.h>
 
 #define GROW_RATE 2
@@ -83,24 +82,13 @@ void CQueue::grow()
     //std::cout << "i'm in grow!!!\n\n";
     int newSize = bufferSize * GROW_RATE;
     int* new_buffer = new int[newSize];
-    if (head < tail) {
-        for (int i = 0; i < tail; i++) {
-            new_buffer[i] = buffer[i];
-        }
-    }
-    else {
-        int current = 0;
-        for (int i = 0; i < bufferSize - head; i++) {
-            new_buffer[current] = buffer[head + i];
-            current++;
-        }
-        for (int i = 0; i < tail; i++) {
-            new_buffer[current] = buffer[i];
-            current++;
-        }
-        head = 0;
-        tail = current;
-    }
+    size_t firstInsert = (size_t)bufferSize - head;
+
+    memcpy(new_buffer, buffer + head, firstInsert * sizeof(int));
+    memcpy(new_buffer + firstInsert, buffer, (bufferSize - firstInsert) * sizeof(int));
+
+    tail = bufferSize - 1;
+    head = 0;
 
     delete[] buffer;
 
@@ -128,18 +116,19 @@ bool IsPossible(CQueue &Q) {
 
     bool answer = true;
     for (int i = 0; i < n; i++) {
+        //Q.print();
         int command, value;
         std::cin >> command >> value;
         switch (command) {
             default: answer = false;
             case 2: {
-                        int get = Q.Dequeue();
-                        answer = answer && (value == get);
-                        break;
+                int get = Q.Dequeue();
+                answer = answer && (value == get);
+                break;
             }
             case 3: {
-                        Q.Enqueue(value);
-                        break;
+                Q.Enqueue(value);
+                break;
             }
 
         }
