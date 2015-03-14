@@ -83,7 +83,6 @@ void CQueue::grow()
     //std::cout << "i'm in grow!!!\n\n";
     int newSize = bufferSize * GROW_RATE;
     int* new_buffer = new int[newSize];
-    int newBufferSize = bufferSize * GROW_RATE;
     if (head < tail) {
         for (int i = 0; i < tail; i++) {
             new_buffer[i] = buffer[i];
@@ -106,7 +105,7 @@ void CQueue::grow()
     delete[] buffer;
 
     buffer = new_buffer;
-    bufferSize = newBufferSize;
+    bufferSize = newSize;
 
 }
 
