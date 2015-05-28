@@ -62,7 +62,7 @@ int main() {
     CHashTable<string> H;
     std::string data;
     char command;
-
+    
     while (std::cin >> command >> data) {
         switch (command) {
             case '+':
@@ -127,13 +127,16 @@ bool CHashTable<T>::Add(const T& data)
         {
             table[hash] = data;
             ++size;
+
             return true;
         }
     }
     
     if( insertPlace != -1 ) {
+        
         table[insertPlace] = data;
         ++size;
+        
         return true;
     }
     
@@ -144,16 +147,21 @@ template <class T>
 bool CHashTable<T>::Has(const T& data)
 {
     int main_hash = Hash(data, table.size());
-
+    
     for(size_t i = 0; i < table.size(); ++i)
     {
         int hash = Probe(main_hash, static_cast<int>(i), static_cast<int>(table.size()));
         if(table[hash] == data)
             return true;
+        
+        if(table[hash] == "")
+        {
+            return false;
+        }
     }
     
     return false;
-
+    
 }
 
 template <class T>
@@ -171,22 +179,13 @@ bool CHashTable<T>::Remove (const T& data)
             return true;
         }
         
+        if(table[hash] == "")
+        {
+            return false;
+        }
+        
     }
     
     return false;
-
+    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
